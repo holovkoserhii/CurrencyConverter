@@ -1,16 +1,19 @@
-import React from 'react';
-import { ScrollView, StatusBar, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { ListItem, Separator } from '../components/List';
+import { ScrollView, StatusBar, Platform, Linking } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
-const Options = () => {
-  const ICON_PREFIX = Platform.OS === 'ios' ? "ios" : 'md';
-  const ICON_COLOR = '#868686';
+import { ListItem, Separator } from "../components/List";
+import { connectAlert } from "../components/Alert";
+
+const Options = ({ navigation, alertWithType }) => {
+  const ICON_PREFIX = Platform.OS === "ios" ? "ios" : "md";
+  const ICON_COLOR = "#868686";
   const ICON_SIZE = 23;
 
-  const handleThemesPress = () => console.log('Themes row pressed');
-  const handleSitePress = () => console.log('Site row pressed');
+  const handleThemesPress = () => navigation.navigate("Themes");
+  const handleSitePress = () => Linking.openURL("https://www.facebook.com/holovko.s").catch(() => alertWithType("error", "Sorry!", "This page can't be opened presently :("));
 
   return (
     <ScrollView>
@@ -24,15 +27,18 @@ const Options = () => {
       />
       <Separator />
       <ListItem
-        text="Fixer.io"
+        text="Me on Facebook"
         onPress={handleSitePress}
-        customIcon={
-          <Ionicons name={`${ICON_PREFIX}-link`} color={ICON_COLOR} size={ICON_SIZE} />
-        }
+        customIcon={<Ionicons name={`${ICON_PREFIX}-link`} color={ICON_COLOR} size={ICON_SIZE} />}
       />
       <Separator />
     </ScrollView>
   );
 };
 
-export default Options;
+Options.propTypes = {
+  navigation: PropTypes.object,
+  alertWithType: PropTypes.func,
+};
+
+export default connectAlert(Options);

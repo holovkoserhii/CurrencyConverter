@@ -1,6 +1,8 @@
 import React from "react";
 import EStyleSheet from "react-native-extended-stylesheet";
-import Themes from "./screens/Themes";
+
+import Navigator from "./config/routes";
+import { AlertProvider } from "./components/Alert";
 
 EStyleSheet.build({
   $primaryBlue: "#4f6d7a",
@@ -11,7 +13,11 @@ EStyleSheet.build({
   $border: "#e2e2e2",
   $inputText: "#797979",
   $lightGrey: "#e0e0e0",
-  $darkText: '#343434',
+  $darkText: "#343434",
 });
 
-export default () => <Themes />;
+export default () => (
+  <AlertProvider>
+    <Navigator />
+  </AlertProvider>
+);

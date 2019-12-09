@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { StatusBar, KeyboardAvoidingView } from "react-native";
 
 import { Container } from "../components/Container";
@@ -8,7 +9,7 @@ import { ClearButton } from "../components/Buttons";
 import { LastConverted } from "../components/Text";
 import { Header } from "../components/Header";
 
-export default () => {
+const Home = ({ navigation }) => {
   const TEMP_BASE_CURRENCY = "USD";
   const TEMP_QOUTE_CURRENCY = "GBP";
   const TEMP_BASE_PRICE = "100";
@@ -21,11 +22,11 @@ export default () => {
   };
 
   const handlePressBaseCurrency = () => {
-    console.log("press base currency");
+    navigation.navigate("CurrencyList", { title: "Base currency" });
   };
 
   const handlePressQuoteCurrency = () => {
-    console.log("press quote currency");
+    navigation.navigate("CurrencyList", { title: "Quote currency" });
   };
 
   const swapCurrency = () => {
@@ -33,7 +34,7 @@ export default () => {
   };
 
   const handleOptionsPress = () => {
-    console.log('handle options change');
+    navigation.navigate("Options");
   };
 
   return (
@@ -66,3 +67,9 @@ export default () => {
     </Container>
   );
 };
+
+Home.propTypes = {
+  navigation: PropTypes.object,
+};
+
+export default Home;

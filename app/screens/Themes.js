@@ -1,6 +1,6 @@
-import React from 'react';
-import { ScrollView, StatusBar, FlatList } from 'react-native';
-import EStyleSheet from 'react-native-extended-stylesheet';
+import React from "react";
+import { ScrollView, StatusBar, FlatList } from "react-native";
+import EStyleSheet from "react-native-extended-stylesheet";
 
 import { ListItem, Separator } from "../components/List";
 
@@ -8,10 +8,10 @@ const Themes = () => {
   const handleThemePress = color => console.log(color);
 
   const styles = EStyleSheet.create({
-    $blue: '$primaryBlue',
-    $orange: '$primaryOrange',
-    $green: '$primaryGreen',
-    $purple: '$primaryPurple',
+    $blue: "$primaryBlue",
+    $orange: "$primaryOrange",
+    $green: "$primaryGreen",
+    $purple: "$primaryPurple",
   });
 
   const rows = [
@@ -26,17 +26,15 @@ const Themes = () => {
       <StatusBar translucent={false} barStyle="default" />
       <FlatList
         data={rows}
-        renderItem={
-          ({ item: { name, color } }) => (
-            <ListItem
-              text={name}
-              selected
-              onPress={() => handleThemePress(color)}
-              checkmark={false}
-              iconBackground={color}
-            />
-          )
-        }
+        renderItem={({ item: { name, color } }) => (
+          <ListItem
+            text={name}
+            selected
+            onPress={() => handleThemePress(color)}
+            checkmark={false}
+            iconBackground={color}
+          />
+        )}
         keyExtractor={item => item.name}
         ItemSeparatorComponent={Separator}
       />
