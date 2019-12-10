@@ -1,11 +1,17 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { ScrollView, StatusBar, FlatList } from "react-native";
 import EStyleSheet from "react-native-extended-stylesheet";
+import { connect } from "react-redux";
 
 import { ListItem, Separator } from "../components/List";
+import { changePrimaryColor } from "../actions/theme";
 
-const Themes = () => {
-  const handleThemePress = color => console.log(color);
+const Themes = ({ navigation, dispatch }) => {
+  const handleThemePress = color => {
+    dispatch(changePrimaryColor(color));
+    navigation.goBack();
+  };
 
   const styles = EStyleSheet.create({
     $blue: "$primaryBlue",
@@ -42,4 +48,9 @@ const Themes = () => {
   );
 };
 
-export default Themes;
+Themes.propTypes = {
+  navigation: PropTypes.object,
+  dispatch: PropTypes.func,
+};
+
+export default connect()(Themes);

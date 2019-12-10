@@ -1,16 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 import { FlatList, View, StatusBar } from "react-native";
+import { connect } from "react-redux";
+
 import { ListItem, Separator } from "../components/List";
-
 import currencies from "../data/currencies";
+import { changeBaseCurrency, changeQuoteCurrency } from "../actions/currencies";
 
-const TEMP_CURRENT_CURRENCY = "UAH";
+const CurrencyList = ({ baseCurrency, quoteCurrency, primaryColor, navigation, dispatch }) => {
+  let comparisonCurrency = baseCurrency;
+  if (navigation.state.params.type === "quote") {
+    comparisonCurrency = quoteCurrency;
+  }
 
-const CurrencyList = ({ navigation }) => {
-  const handlePress = () => {
-    console.log("row pressed");
+  const handlePress = currency => {
+    const { type } = navigation.state.params;
+    if (type === "base") {
+      dispatch(changeBaseCurrency(currency));
+    } else if (type === "quote") {
+      dispatch(changeQuoteCurrency(currency));
+    }
     navigation.goBack(null);
   };
 
@@ -22,8 +31,9 @@ const CurrencyList = ({ navigation }) => {
         renderItem={({ item }) => (
           <ListItem
             text={item}
-            selected={item === TEMP_CURRENT_CURRENCY}
-            onPress={handlePress}
+            selected={item === comparisonCurrency}
+            onPress={() => handlePress(item)}
+            iconBackground={primaryColor}
             checkmark
           />
         )}
@@ -36,6 +46,16 @@ const CurrencyList = ({ navigation }) => {
 
 CurrencyList.propTypes = {
   navigation: PropTypes.object,
+  dispatch: PropTypes.func,
+  baseCurrency: PropTypes.string,
+  quoteCurrency: PropTypes.string,
+  primaryColor: PropTypes.string,
 };
 
-export default CurrencyList;
+const mapStateToProps = state => ({
+  baseCurrency: state.currencies.baseCurrency,
+  quoteCurrency: state.currencies.quoteCurrency,
+  primaryColor: state.theme.primaryColor,
+});
+
+export default connect(mapStateToProps)(CurrencyList);

@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { View, ImageBackground, Text, Keyboard, Animated, Platform } from "react-native";
 import styles from "./styles";
 
-const Logo = () => {
+const Logo = ({ tintColor }) => {
   const AnimatedImage = Animated.createAnimatedComponent(ImageBackground);
 
   const containerImageWidth = new Animated.Value(styles.$largeContainerSize);
@@ -10,19 +11,19 @@ const Logo = () => {
 
   const ANIMATION_DURATION = 250;
 
-  const showListener = Platform.OS === 'android' ? 'keyboardDidShow' : 'keyboardWillShow';
-  const hideListener = Platform.OS === 'android' ? 'keyboardDidHide' : 'keyboardWillHide';
+  const showListener = Platform.OS === "android" ? "keyboardDidShow" : "keyboardWillShow";
+  const hideListener = Platform.OS === "android" ? "keyboardDidHide" : "keyboardWillHide";
 
   const animatedParallel = (toValueForContainer, toValueForImage) => () => Animated.parallel([
-    Animated.timing(containerImageWidth, {
-      toValue: toValueForContainer,
-      duration: ANIMATION_DURATION,
-    }),
-    Animated.timing(imageWidth, {
-      toValue: toValueForImage,
-      duration: ANIMATION_DURATION,
-    }),
-  ]).start();
+      Animated.timing(containerImageWidth, {
+        toValue: toValueForContainer,
+        duration: ANIMATION_DURATION,
+      }),
+      Animated.timing(imageWidth, {
+        toValue: toValueForImage,
+        duration: ANIMATION_DURATION,
+      }),
+    ]).start();
 
   const keyboardShow = animatedParallel(styles.$smallContainerSize, styles.$smallImageSize);
   const keyboardHide = animatedParallel(styles.$largeContainerSize, styles.$largeImageSize);
@@ -41,10 +42,7 @@ const Logo = () => {
     { width: containerImageWidth, height: containerImageWidth },
   ];
 
-  const imageStyle = [
-    styles.logo,
-    { width: imageWidth },
-  ];
+  const imageStyle = [styles.logo, { width: imageWidth }, tintColor ? { tintColor } : null];
   return (
     <View style={styles.container}>
       <AnimatedImage
@@ -52,11 +50,19 @@ const Logo = () => {
         source={require("./images/background.png")}
         style={containerImageStyle}
       >
-        <Animated.Image resizeMode="contain" style={imageStyle} source={require("./images/logo.png")} />
+        <Animated.Image
+          resizeMode="contain"
+          style={imageStyle}
+          source={require("./images/logo.png")}
+        />
       </AnimatedImage>
       <Text style={styles.text}>Currency Converter</Text>
     </View>
   );
+};
+
+Logo.propTypes = {
+  tintColor: PropTypes.string,
 };
 
 export default Logo;
